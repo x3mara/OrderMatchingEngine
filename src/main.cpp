@@ -12,12 +12,8 @@ int main(){
     ob.debug();
     ob.addOrder(o2);
     ob.debug();
-    ob.addOrder(o2);
-    ob.debug();
-    ob.addOrder(o2);
-    ob.debug();
-    ob.addOrder(o2);
-    ob.debug();
-    ob.addOrder(o3);
+    auto ret = ob.cancelOrder(1);
+    if(ret) std::cout<<"remaining: "<<ret->quantity()<<'\n';
+    else std::cout<<"NOOOO\n";
     ob.debug();
 }

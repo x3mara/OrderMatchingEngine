@@ -4,6 +4,7 @@
 
 class Order{
 public:
+    Order() = default;
     Order(int id, Side side, double price, int quantity);
 
     int id() const;

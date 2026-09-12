@@ -4,6 +4,7 @@
 OrderBook::OrderBook(){}
 
 void OrderBook::addOrder(const Order& incoming_order){
+    currentOrders_[incoming_order.id()] = incoming_order;
     switch (incoming_order.side())
     {
     case Side::Buy:
@@ -14,6 +15,26 @@ void OrderBook::addOrder(const Order& incoming_order){
         matchSell(incoming_order);
         break;
     }
+}
+
+std::optional<Order> OrderBook::cancelOrder(int orderId){
+    if(currentOrders_.find(orderId) == currentOrders_.end()){
+        return std::nullopt;
+    }
+    Order order = currentOrders_[orderId];
+    std::deque<Order> &dq = (order.side() == Side::Buy ?
+        buys_[order.price()] : sells_[order.price()]);
+    
+    auto it = std::find_if(dq.begin(), dq.end(),
+        [&](const Order& o){return o.id() == orderId;});
+    
+    if(it == dq.end()) return std::nullopt;
+    order = *it;
+    dq.erase(it);
+    currentOrders_.erase(orderId);
+
+    if(order.quantity() == 0) return std::nullopt;
+    return order;
 }
 
 void OrderBook::matchBuy(const Order& incoming_order){
@@ -75,5 +96,6 @@ void OrderBook::debug(){
         for(auto i:q) std::cout<<i<<' ';
         std::cout<<'\n';
     }
+    std::cout<<"==================\n";
     std::cout.flush();
 }
