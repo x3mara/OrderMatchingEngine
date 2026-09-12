@@ -18,7 +18,7 @@ void OrderBook::addOrder(const Order& incoming_order){
 
 void OrderBook::matchBuy(const Order& incoming_order){
     Order order = incoming_order;
-    auto currentUpper = sells_.upper_bound(order.quantity());
+    auto currentUpper = sells_.upper_bound(order.price());
     while(order.quantity() && currentUpper != sells_.begin()){
         auto &[price,qu] = *prev(currentUpper);
         while(qu.size()){
@@ -40,7 +40,7 @@ void OrderBook::matchBuy(const Order& incoming_order){
 }
 void OrderBook::matchSell(const Order& incoming_order){
     Order order = incoming_order;
-    auto current = buys_.lower_bound(order.quantity());
+    auto current = buys_.lower_bound(order.price());
     while(order.quantity() && current != buys_.end()){
         auto &[price,qu] = *current;
         while(qu.size()){
@@ -62,6 +62,7 @@ void OrderBook::matchSell(const Order& incoming_order){
 }
 
 void OrderBook::debug(){
+    std::cout<<"=== Order Book ===\n";
     std::cout<<"Current Sells: \n";
     for(auto &[p,q]:sells_){
         std::cout<<p<<": ";
