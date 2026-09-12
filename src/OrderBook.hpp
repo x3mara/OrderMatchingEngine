@@ -12,11 +12,12 @@ public:
     void addOrder(const Order& incoming_order);
     std::optional<Order> cancelOrder(int orderId);
 
-    void debug();
+    std::deque<Order>* bestBuy(double requestPrice);
+    std::deque<Order>* bestSell(double requestPrice);
+
+    void debug() const;
+
 private:
     std::map<double,std::deque<Order>> sells_, buys_;
     std::map<int,Order> currentOrders_;
-
-    void matchBuy(const Order& incoming_order);
-    void matchSell(const Order& incoming_order);
 };

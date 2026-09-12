@@ -8,6 +8,7 @@ add_executable(matching_engine
     src/main.cpp
     src/Order.cpp
     src/OrderBook.cpp
+    src/MatchingEngine.cpp
 )
 
 target_include_directories(matching_engine PRIVATE src)

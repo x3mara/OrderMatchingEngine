@@ -17,7 +17,8 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Order& order);
 
 private:
-    int id_, quantity_, initialQuantity_;
+    int id_;
     Side side_;
     double price_;
+    int quantity_, initialQuantity_;
 };
