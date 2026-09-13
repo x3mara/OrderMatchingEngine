@@ -13,10 +13,5 @@ int main(){
     e.debug();
     e.submitOrder(o2);
     e.debug();
-    e.submitOrder(o2);
-    e.debug();
-    e.submitOrder(o1);
-    e.debug();
-    e.submitOrder(o3);
-    e.debug();
+    std::cout<<e.waitingCount()<<'\n';
 }

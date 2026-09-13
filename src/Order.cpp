@@ -6,7 +6,7 @@ Order::Order(int id, Side side, double price, int quantity)
             initialQuantity_(quantity){
             assert(quantity > 0);
         };
-
+        
 int Order::id() const{
     return id_;
 }

@@ -1,6 +1,30 @@
 #include "MatchingEngine.hpp"
 
-std::vector<Trade> MatchingEngine::submitOrder(const Order& incoming_order){
+MatchingEngine::MatchingEngine()
+    :workerThread_(&MatchingEngine::workerProcess, this){}
+
+MatchingEngine::~MatchingEngine(){
+    queue_.forceStop();
+    workerThread_.join();
+}
+
+void MatchingEngine::submitOrder(const Order& incoming_order){
+    queue_.push(incoming_order);
+}
+
+void MatchingEngine::workerProcess(){
+    try{
+        while(true){
+            Order order = queue_.pop();
+            matchOrder(order);
+        }
+    }
+    catch(const std::runtime_error&){
+        std::cout<<"WorkerThread met an error."<<std::endl; 
+    }
+}
+
+std::vector<Trade> MatchingEngine::matchOrder(const Order& incoming_order){
     switch (incoming_order.side())
     {
     case Side::Buy:
@@ -73,6 +97,10 @@ std::vector<Trade> MatchingEngine::matchSell(const Order& incoming_order){
         book_.addOrder(order);
     }
     return trades;
+}
+
+size_t MatchingEngine::waitingCount() const{
+    return queue_.size();
 }
 
 void MatchingEngine::debug() const {
