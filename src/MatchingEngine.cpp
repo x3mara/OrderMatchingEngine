@@ -5,7 +5,7 @@ MatchingEngine::MatchingEngine()
     :workerThread_(&MatchingEngine::workerProcess, this){}
 
 MatchingEngine::~MatchingEngine(){
-    queue_.forceStop();
+    queue_.stop();
     workerThread_.join();
 }
 
@@ -22,8 +22,8 @@ void MatchingEngine::workerProcess(){
             }
         }
     }
-    catch(const std::runtime_error&){
-        std::cout<<"WorkerThread met an error."<<std::endl; 
+    catch(const std::runtime_error& e){
+        std::cout<<"WorkerThread Stopped: " << e.what() <<std::endl; 
     }
 }
 

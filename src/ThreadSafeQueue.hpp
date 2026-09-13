@@ -20,11 +20,16 @@ public:
         std::unique_lock<std::mutex> lock(mutex_);
         cv_.wait(lock, [&](){return !queue_.empty() || stopping_;});
         if(stopping_ && queue_.empty()){
-            throw std::runtime_error("Queue Stopped.");
+            throw std::runtime_error("Queue Stopped");
         }
         T o = std::move(queue_.front());
         queue_.pop();
         return o;
+    }
+    void stop(){
+        std::lock_guard<std::mutex> lock(mutex_);
+        stopping_ = true;
+        cv_.notify_all();
     }
     void forceStop(){
         std::lock_guard<std::mutex> lock(mutex_);

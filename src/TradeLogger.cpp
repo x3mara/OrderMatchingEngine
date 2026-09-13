@@ -2,6 +2,7 @@
 #include "TimeUtils.hpp"
 
 TradeLogger::TradeLogger():file_(getLogPath()){
+    file_ << std::fixed << std::setprecision(2);
     file_ << "SellOrderId,BuyOrderId,Price,Quantity,Timestamp\n";
 }
 
