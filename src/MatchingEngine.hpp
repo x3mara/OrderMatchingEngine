@@ -2,6 +2,7 @@
 #include "OrderBook.hpp"
 #include "Trade.hpp"
 #include "ThreadSafeQueue.hpp"
+#include "TradeLogger.hpp"
 #include <vector>
 #include <thread>
 
@@ -20,6 +21,7 @@ private:
     OrderBook book_;
     ThreadSafeQueue<Order> queue_;
     std::thread workerThread_;
+    TradeLogger tradeLogger_;
 
     void workerProcess();
 

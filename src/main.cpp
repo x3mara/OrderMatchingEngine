@@ -10,8 +10,7 @@ int main(){
     Order o3(10,Side::Sell,200,10);
     MatchingEngine e;
     e.submitOrder(o1);
-    e.debug();
     e.submitOrder(o2);
+    while(e.waitingCount());
     e.debug();
-    std::cout<<e.waitingCount()<<'\n';
 }

@@ -1,4 +1,5 @@
 #include "MatchingEngine.hpp"
+#include <filesystem>
 
 MatchingEngine::MatchingEngine()
     :workerThread_(&MatchingEngine::workerProcess, this){}
@@ -16,7 +17,9 @@ void MatchingEngine::workerProcess(){
     try{
         while(true){
             Order order = queue_.pop();
-            matchOrder(order);
+            for(auto trade:matchOrder(order)){
+                tradeLogger_.log(trade);
+            }
         }
     }
     catch(const std::runtime_error&){
