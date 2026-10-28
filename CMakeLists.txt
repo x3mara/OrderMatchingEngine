@@ -20,3 +20,22 @@ endif()
 
 find_package(Threads REQUIRED)
 target_link_libraries(matching_engine PRIVATE Threads::Threads)
+
+include(FetchContent)
+FetchContent_Declare(Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.5.0)
+FetchContent_MakeAvailable(Catch2)
+
+add_executable(tests
+    tests/MatchingEngineTests.cpp
+    tests/OrderBookTests.cpp
+    src/Order.cpp
+    src/OrderBook.cpp
+    src/MatchingEngine.cpp
+    src/TradeLogger.cpp
+)
+
+target_include_directories(tests PRIVATE src)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(tests PRIVATE Threads::Threads)

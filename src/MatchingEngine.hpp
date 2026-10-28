@@ -15,6 +15,7 @@ public:
 
     // Debug functions <3
     size_t waitingCount() const;
+    OrderBook getBook() const;
     void debug() const;
 
 private:

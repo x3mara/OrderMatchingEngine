@@ -37,6 +37,24 @@ std::optional<Order> OrderBook::cancelOrder(int orderId){
     return order;
 }
 
+std::optional<Order> OrderBook::getOrder(int orderId) const {
+    if(currentOrders_.find(orderId) == currentOrders_.end()){
+        return std::nullopt;
+    }
+    Order order = currentOrders_.at(orderId);
+    const std::deque<Order> &dq = (order.side() == Side::Buy ?
+        buys_.at(order.price()) : sells_.at(order.price()));
+    
+    auto it = std::find_if(dq.begin(), dq.end(),
+        [&](const Order& o){return o.id() == orderId;});
+    
+    if(it == dq.end()) return std::nullopt;
+    order = *it;
+
+    if(order.quantity() == 0) return std::nullopt;
+    return order;
+}
+
 std::deque<Order>* OrderBook::bestSell(double requestPrice){
     auto currentUpper = sells_.upper_bound(requestPrice);
     while(currentUpper != sells_.begin() &&

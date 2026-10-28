@@ -14,7 +14,8 @@ public:
 
     std::deque<Order>* bestBuy(double requestPrice);
     std::deque<Order>* bestSell(double requestPrice);
-
+    
+    std::optional<Order> getOrder(int orderId) const;
     void debug() const;
 
 private:

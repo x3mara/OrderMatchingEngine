@@ -106,6 +106,10 @@ size_t MatchingEngine::waitingCount() const{
     return queue_.size();
 }
 
+OrderBook MatchingEngine::getBook() const {
+    return book_;
+}
+
 void MatchingEngine::debug() const {
     book_.debug();
 }
