@@ -16,13 +16,18 @@ TEST_CASE("adding an order"){
 TEST_CASE("cancelling an order"){
     OrderBook book;
     book.addOrder(Order(1,Side::Buy,100.0,50));
-    auto cancelled_order = book.cancelOrder(1);
     SECTION("cancelling an existing order"){
+        auto cancelled_order = book.cancelOrder(1);
         REQUIRE(cancelled_order.has_value());
         CHECK(cancelled_order->quantity() == 50);
     }
-    cancelled_order = book.cancelOrder(1);
-    SECTION("cancelling a non existing order"){
+    SECTION("cancelling a cancelled order"){
+        book.cancelOrder(1);
+        auto cancelled_order = book.cancelOrder(1);
+        REQUIRE_FALSE(cancelled_order.has_value());
+    }
+    SECTION("cancelling a non-existing order"){
+        auto cancelled_order = book.cancelOrder(2);
         REQUIRE_FALSE(cancelled_order.has_value());
     }
 }
